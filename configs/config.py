@@ -14,10 +14,14 @@
 #
 # Contact: mica@tue.mpg.de
 
+##################### train.py에서 실행시킨다.
+# import시 파일이 전체적으로 한번 실행된다는 사실을 이용하여 여러 요소들을 설정한다.
 
+# argparse는 실행시 옵션 파라미터를 설정하는데 사용된다.(리눅스에서 -r이나 --all같은 옵션 명령어)
 import argparse
 import os
 
+# CfgNode는 설정을 저장하기 위한 객체로 보인다.
 from yacs.config import CfgNode as CN
 
 cfg = CN()
@@ -109,7 +113,9 @@ def update_cfg(cfg, cfg_file):
     cfg.merge_from_file(cfg_file)
     return cfg.clone()
 
-
+# ##############train.py에서 호출
+# 실행 가능한 옵션 인자값은 --cfg, --test_dataset, --checkpoint이며,
+# 신기하게도 설정한 옵션값 이름으로 parser에 접근이 가능하다(parser.cfg, args.cfg, parser.test_dataset 등등)
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--cfg', type=str, help='cfg file path', required=True)
@@ -119,7 +125,9 @@ def parse_args():
     args = parser.parse_args()
     print(args, end='\n\n')
 
+    # 옵션값이 들어간 cfg 객체 생성(정확히 말하면 이미 생성된 cfg 객체를 복제하여 반환)
     cfg = get_cfg_defaults()
+    # 만약 실행시 옵션으로 이미 cfg파일을 이어받았다면 받은 cfg파일을 기반으로 실행한다.
     if args.cfg is not None:
         cfg_file = args.cfg
         cfg = update_cfg(cfg, args.cfg)

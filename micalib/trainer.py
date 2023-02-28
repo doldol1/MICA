@@ -50,14 +50,17 @@ def seed_worker(worker_id):
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
-
+# jobs.py에서 생성한 클래스.
 class Trainer(object):
+    # Generator
     def __init__(self, nfc_model, config=None, device=None):
+        # 설정이 안된 상황이면 다시 설정
         if config is None:
             self.cfg = cfg
         else:
             self.cfg = config
 
+        # log파일 추가
         logger.add(os.path.join(self.cfg.output_dir, self.cfg.train.log_dir, 'train.log'))
 
         self.device = device
@@ -174,6 +177,7 @@ class Trainer(object):
     def evaluation_step(self):
         pass
 
+    # fit()에서 실행시키는 데이터 준비
     def prepare_data(self):
         generator = torch.Generator()
         generator.manual_seed(self.device)
@@ -191,6 +195,7 @@ class Trainer(object):
         self.train_iter = iter(self.train_dataloader)
         logger.info(f'[TRAINER] Training dataset is ready with {len(self.train_dataset)} actors and {total_images} images.')
 
+    # jobs.py에서 실행하는 fit 함수
     def fit(self):
         self.prepare_data()
         iters_every_epoch = int(len(self.train_dataset) / self.batch_size)
