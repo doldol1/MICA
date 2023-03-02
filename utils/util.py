@@ -23,7 +23,7 @@ import torch
 import torch.nn.functional as F
 import torchvision
 
-
+# model_dir='micalib.models', model_name='mica'
 def find_model_using_name(model_dir, model_name):
     # adapted from pix2pix framework: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/__init__.py#L25
     # import "model_dir/modelname.py"
